@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
 class DriveModelRequest extends FormRequest
 {
@@ -26,6 +27,17 @@ class DriveModelRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
+            'birthday' => ['required','date', function($attribute, $value, $fail) {
+                $date1 = Carbon::now();
+                $date2 = Carbon::createFromFormat('Y-m-d', $value);
+                if($date1->diffInYears($date2) > 65) {
+                    $fail('The driver is more than 65 years old.');
+                }  
+            }],
+
+            'name' => ['required', 'min:3'],
+            'surname' => ['required', 'min:3'],
+            'salary' => ['required','decimal: 2.00']
         ];
     }
 
@@ -49,7 +61,12 @@ class DriveModelRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'name.required' => 'You gotta give it a name, man.',
+            'name.min' => 'You came up short. Try more than 3 characters.',
+            'surname.required' => 'You gotta give it a surname, man.',
+            'surname.min' => 'You came up short. Try more than 3 characters.',
+            'salary.required' => 'Enter the correct field Salary',
+            'salary.decimal' => 'input format is not correct. Try is correct 2.00'
         ];
     }
 }

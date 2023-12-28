@@ -25,7 +25,7 @@ class CarBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand' => 'required|min:3|max:10'
+            'brand' => ['required', 'min:3', 'max:10']
         ];
     }
 

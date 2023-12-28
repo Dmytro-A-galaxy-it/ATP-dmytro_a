@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\DriveModelRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 
 /**
  * Class DriveModelCrudController
@@ -39,7 +40,25 @@ class DriveModelCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        //CRUD::setFromDb(); // set columns from db columns.
+        CRUD::addColumns([
+            'name' => 'name',
+            'surname' => 'surname',
+            'birthday' => 'birthday',
+            'salary' => 'salary',
+            'email' => 'email'
+            ]
+        );
+
+        CRUD::addColumn([
+            'name' => 'age',
+            'type' => 'number'
+        ]);
+
+        CRUD::addColumn([                
+            'photo' => 'photo',
+            'type' => 'file'
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -56,6 +75,12 @@ class DriveModelCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(DriveModelRequest::class);
+        CRUD::field(
+            [
+                'name' => 'photo',
+                'type' => 'upload'
+            ]
+        );
         CRUD::setFromDb();
     }
 
