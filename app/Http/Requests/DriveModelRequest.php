@@ -37,7 +37,7 @@ class DriveModelRequest extends FormRequest
 
             'name' => ['required', 'min:3'],
             'surname' => ['required', 'min:3'],
-            'salary' => ['required','decimal: 2.00']
+            'salary' => ['required','numeric: 2.00']
         ];
     }
 

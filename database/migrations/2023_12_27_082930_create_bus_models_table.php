@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('drive_id')->nullable();
             $table->foreign('drive_id')
                     ->references('id')->on('drive_models')
+                    ->onDelete('set null')
                     ->nullable();
             $table->timestamps();
         });

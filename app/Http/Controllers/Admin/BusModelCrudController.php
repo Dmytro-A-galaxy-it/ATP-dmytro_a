@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CarBrandRequest;
+use App\Http\Requests\BusModelRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class CarBrandCrudController
+ * Class BusModelCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class CarBrandCrudController extends CrudController
+class BusModelCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class CarBrandCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\CarBrand::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/car-brand');
-        CRUD::setEntityNameStrings('car brand', 'car brands');
+        CRUD::setModel(\App\Models\BusModel::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/bus-model');
+        CRUD::setEntityNameStrings('bus model', 'bus models');
     }
 
     /**
@@ -39,14 +39,34 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // set columns from db columns.
-        CRUD::addColumn(
-            [
-                'name' => 'brand',
-                'label'     => 'Brand',
-                'type' => 'text'
+        // CRUD::setFromDb(); // set columns from db columns.
+
+        CRUD::addColumn([
+            'name' => 'deg_namber',
+            'label' => 'Number Bus',
+            'type' => 'text'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'brand.brand',
+            'type' => 'text',
+            'wrapper' => [
+                'href' => function($crud, $column, $model){
+                    return backpack_url("car-brand/{$model->brand_id}/show");
+                }
             ]
-        );
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'drive_model.name',
+            'type' => 'text',
+            'wrapper' => [
+                'href' => function($crud, $column, $model) {
+                    return backpack_url("drive-model/{$model->drive_id}/show");
+                }
+            ]
+        ]);
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -61,14 +81,30 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CarBrandRequest::class);
-        CRUD::field(
-            [
-                'name' => 'brand',
-                'label' => 'BRAND',
-                'type' => 'text'
-            ]
-        );
+        CRUD::setValidation(BusModelRequest::class);
+
+        CRUD::addField([
+            'name' => 'deg_namber',
+            'label' => 'Number Bus',
+            'type' => 'text'
+        ]);
+        
+        CRUD::addField([
+            'name' => 'brand_id',
+            'type' => 'select',
+            'entity' => 'brand',
+            'attribute' => 'brand'
+        ]);
+
+        CRUD::addField([
+            'name' => 'drive_id',
+            'type' => 'select',
+            'entity' => 'drive_model',
+            'attribute' => 'name'
+        ]);
+
+        //CRUD::setFromDb(); // set fields from db columns.
+
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\DriveDeleting;
 use Carbon\Carbon;
 
 class DriveModel extends Model
@@ -21,6 +22,10 @@ class DriveModel extends Model
         'email'
     ];
 
+    protected $dispatchesEvents = [
+        'deleting' => DriveDeleting::class,
+    ];
+
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = strtolower($value);
@@ -35,5 +40,14 @@ class DriveModel extends Model
         $date1 = Carbon::now();
         $date2 = Carbon::createFromFormat('Y-m-d', $this->birthday);
         return $date1->diffInYears($date2);
+    }
+
+    public function setPhotoAttribute($value)
+    {
+        $attribute_name = "photo";
+        $disk = "public";
+        $destination_path = "public/storage";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
     }
 }

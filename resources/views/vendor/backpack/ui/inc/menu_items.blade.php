@@ -3,3 +3,4 @@
 
 <x-backpack::menu-item title="Car brands" icon="la la-automobile" :link="backpack_url('car-brand')" />
 <x-backpack::menu-item title="Drive models" icon="las la-user-tie" :link="backpack_url('drive-model')" />
+<x-backpack::menu-item title="Bus models" icon="las la-bus" :link="backpack_url('bus-model')" />

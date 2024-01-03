@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Events\DriveDeleting;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BusModel extends Model
 {
+    use CrudTrait;
     use HasFactory;
 
     protected $fillable = [
@@ -14,4 +17,16 @@ class BusModel extends Model
         'brand_id',
         'drive_id'
     ];
+
+    
+
+    public function brand()
+    {
+        return $this->belongsTo(CarBrand::class, 'brand_id');
+    }
+
+    public function drive_model()
+    {
+        return $this->belongsTo(DriveModel::class, 'drive_id');
+    }
 }

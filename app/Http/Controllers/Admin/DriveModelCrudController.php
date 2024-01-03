@@ -40,15 +40,33 @@ class DriveModelCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // set columns from db columns.
-        CRUD::addColumns([
+        // CRUD::setFromDb(false); // set columns from db columns.
+        CRUD::addColumn([
             'name' => 'name',
-            'surname' => 'surname',
-            'birthday' => 'birthday',
-            'salary' => 'salary',
-            'email' => 'email'
+            'label' => 'Name',
+            'type' => 'text'
             ]
         );
+
+        CRUD::addColumn([
+            'name' => 'surname',
+            'label' => 'Surname',
+            'type' => 'text'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'birthday',
+            'label' => 'birthday',
+            'type' => 'date'
+        ]);
+
+
+        CRUD::addColumn([
+            'name' => 'salary',
+            'label' => 'Salary UAH',
+            'type' => 'numeric'
+
+        ]);
 
         CRUD::addColumn([
             'name' => 'age',
@@ -56,9 +74,28 @@ class DriveModelCrudController extends CrudController
         ]);
 
         CRUD::addColumn([                
-            'photo' => 'photo',
-            'type' => 'file'
+            'name' => 'photo',
+            'type' => 'image',
+            'disk' => 'public',
         ]);
+
+
+        CRUD::addColumn([
+            'name' => 'email',
+            'label' => 'Email Adress',
+            'type' => 'email'
+        ]);
+
+        // CRUD::addColumn([
+        //     'name' => 'deg_namber.name',
+        //     'type' => 'text',
+        //     'wrapper' => [
+        //         'href' => function($crud, $column, $model) {
+                    
+        //             return backpack_url("drive-model/{$model->id}/show");
+        //         }
+        //     ]
+        // ]);
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -75,13 +112,50 @@ class DriveModelCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(DriveModelRequest::class);
-        CRUD::field(
-            [
-                'name' => 'photo',
-                'type' => 'upload'
-            ]
-        );
-        CRUD::setFromDb();
+
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Name',
+            'type' => 'text'
+            
+        ]);
+
+        CRUD::addField([
+            'name' => 'surname',
+            'label' => 'Surname',
+            'type' => 'text'
+            
+        ]);
+
+        CRUD::addField([
+            'name' => 'birthday',
+            'label' => 'BirthDay',
+            'type' => 'date'
+            
+        ]);
+
+        CRUD::addField([
+            'name' => 'salary',
+            'type' => 'number',
+            'attributes' => [
+                'step' => '0.01'
+            ],
+            'prefix' => 'UAH'
+        ]);
+
+        CRUD::addField([
+            'name' => 'photo',
+            'label' => 'Profile image', 
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public'
+        ]);
+
+        CRUD::addField([
+            'name' => 'email',
+            'label' => 'Email Adress',
+            'type' => 'email'
+        ]);
     }
 
     /**
@@ -94,4 +168,10 @@ class DriveModelCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+    }
+
 }
