@@ -30,6 +30,10 @@ class DriveModelCrudController extends CrudController
         CRUD::setModel(\App\Models\DriveModel::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/drive-model');
         CRUD::setEntityNameStrings('drive model', 'drive models');
+
+        if(backpack_user()->hasRole('Driver')) {
+            $this->crud->query->where('user_id', backpack_user()->id);
+        }
     }
 
     /**
@@ -40,7 +44,11 @@ class DriveModelCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        if(!backpack_user()->can('drive-models')) {
+            abort(403);
+        }
         // CRUD::setFromDb(false); // set columns from db columns.
+
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Name',
@@ -81,9 +89,15 @@ class DriveModelCrudController extends CrudController
 
 
         CRUD::addColumn([
-            'name' => 'email',
+            'name' => 'user.email',
             'label' => 'Email Adress',
             'type' => 'email'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'user.name',
+            'label' => 'System Name',
+            'type' => 'text'
         ]);
 
         // CRUD::addColumn([
@@ -155,6 +169,13 @@ class DriveModelCrudController extends CrudController
             'name' => 'email',
             'label' => 'Email Adress',
             'type' => 'email'
+        ]);
+
+        CRUD::addField([
+            'name' => 'user_id',
+            'type' => 'select',
+            'entity' => 'user',
+            'attribute' => 'name'
         ]);
     }
 

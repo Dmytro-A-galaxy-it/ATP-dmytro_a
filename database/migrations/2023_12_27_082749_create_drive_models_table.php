@@ -11,15 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
+        
         Schema::create('drive_models', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 50);
-            $table->string('surname', 100);
-            $table->date('birthday');
-            $table->string('photo', 500)->nullable();
-            $table->double('salary', 8, 2);
-            $table->string('email')->unique();
-            $table->timestamps();
+                $table->id();
+                $table->string('name', 50);
+                $table->string('surname', 100);
+                $table->date('birthday');
+                $table->string('photo', 500)->nullable();
+                $table->double('salary', 8, 2);
+                $table->string('email')->unique();
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->foreign('user_id')
+                            ->references('id')->on('users')
+                            ->onDelete('set null')
+                            ->nullable();
+                $table->timestamps();
         });
     }
 

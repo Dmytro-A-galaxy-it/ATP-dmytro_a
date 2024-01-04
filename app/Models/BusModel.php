@@ -18,7 +18,9 @@ class BusModel extends Model
         'drive_id'
     ];
 
-    
+    public function setDegnamberAttribute($value){
+        $this->attributes['deg_namber'] = strtolower($value);
+    }
 
     public function brand()
     {

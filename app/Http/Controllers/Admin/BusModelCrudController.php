@@ -39,7 +39,9 @@ class BusModelCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // CRUD::setFromDb(); // set columns from db columns.
+        if(!backpack_user()->can('bus-models')) {
+            abort(403);
+        }
 
         CRUD::addColumn([
             'name' => 'deg_namber',

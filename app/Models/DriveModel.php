@@ -19,11 +19,8 @@ class DriveModel extends Model
         'birthday',
         'photo',
         'salary',
-        'email'
-    ];
-
-    protected $dispatchesEvents = [
-        'deleting' => DriveDeleting::class,
+        'email',
+        'user_id'
     ];
 
     public function setNameAttribute($value)
@@ -49,5 +46,9 @@ class DriveModel extends Model
         $destination_path = "public/storage";
 
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

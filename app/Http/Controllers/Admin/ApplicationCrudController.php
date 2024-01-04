@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CarBrandRequest;
+use App\Http\Requests\ApplicationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class CarBrandCrudController
+ * Class ApplicationCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class CarBrandCrudController extends CrudController
+class ApplicationCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,10 +26,9 @@ class CarBrandCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\CarBrand::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/car-brand');
-        CRUD::setEntityNameStrings('car brand', 'car brands');
-
+        CRUD::setModel(\App\Models\Application::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/application');
+        CRUD::setEntityNameStrings('application', 'applications');
     }
 
     /**
@@ -40,17 +39,8 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        if(!backpack_user()->can('car-brand')) {
-            abort(403);
-        }
-        //CRUD::setFromDb(); // set columns from db columns.
-        CRUD::addColumn(
-            [
-                'name' => 'brand',
-                'label'     => 'Brand',
-                'type' => 'text'
-            ]
-        );
+        CRUD::setFromDb(); // set columns from db columns.
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -65,14 +55,9 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CarBrandRequest::class);
-        CRUD::field(
-            [
-                'name' => 'brand',
-                'label' => 'BRAND',
-                'type' => 'text'
-            ]
-        );
+        CRUD::setValidation(ApplicationRequest::class);
+        CRUD::setFromDb(); // set fields from db columns.
+
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
@@ -88,9 +73,5 @@ class CarBrandCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    protected function setupShowOperation(){
-        $this->setupListOperation();
     }
 }

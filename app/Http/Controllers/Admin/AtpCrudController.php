@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CarBrandRequest;
+use App\Http\Requests\AtpRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class CarBrandCrudController
+ * Class AtpCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class CarBrandCrudController extends CrudController
+class AtpCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,10 +26,9 @@ class CarBrandCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\CarBrand::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/car-brand');
-        CRUD::setEntityNameStrings('car brand', 'car brands');
-
+        CRUD::setModel(\App\Models\Atp::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/atp');
+        CRUD::setEntityNameStrings('atp', 'atps');
     }
 
     /**
@@ -40,17 +39,38 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        if(!backpack_user()->can('car-brand')) {
+        if(!backpack_user()->can('atps')) {
             abort(403);
         }
-        //CRUD::setFromDb(); // set columns from db columns.
-        CRUD::addColumn(
-            [
-                'name' => 'brand',
-                'label'     => 'Brand',
-                'type' => 'text'
-            ]
-        );
+
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Name ATP',
+            'type' => 'text'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'logo',
+            'label' => 'Logo',
+            'type' => 'image',
+            'disk' => 'public'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'phone',
+            'label' => 'Phone',
+            'type' => 'phone'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'description',
+            'label' => 'Description',
+            'type' => 'text'
+        ]);
+
+
+
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -65,14 +85,34 @@ class CarBrandCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CarBrandRequest::class);
-        CRUD::field(
-            [
-                'name' => 'brand',
-                'label' => 'BRAND',
-                'type' => 'text'
-            ]
-        );
+        CRUD::setValidation(AtpRequest::class);
+
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Name',
+            'type' => 'text'
+        ]);
+
+        CRUD::addField([
+            'name' => 'logo',
+            'logo' => 'Logo ATP',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public'
+        ]);
+
+        CRUD::addField([
+            'name' => 'phone',
+            'label' => 'Phone',
+            'type' => 'text'
+        ]);
+
+        CRUD::addField([
+            'name' => 'description',
+            'label' => 'description',
+            'type' => 'text'
+        ]);
+
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
@@ -88,9 +128,5 @@ class CarBrandCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    protected function setupShowOperation(){
-        $this->setupListOperation();
     }
 }
