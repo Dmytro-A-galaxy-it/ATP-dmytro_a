@@ -6,7 +6,7 @@
                     @unless(backpack_theme_config('options.doubleTopBarInHorizontalLayouts'))
                         <li class="nav-brand">
                             <a class="nav-link" href="{{ url(backpack_theme_config('home_link')) }}">
-                                {!! backpack_theme_config('project_logo') !!}
+                                ATP
                             </a>
                         </li>
                     @endunless

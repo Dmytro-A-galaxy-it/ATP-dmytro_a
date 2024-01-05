@@ -6,7 +6,9 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\DriveDeleting;
+use App\Mail\ThankEmail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class DriveModel extends Model
 {
@@ -14,6 +16,7 @@ class DriveModel extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'surname',
         'birthday',
@@ -22,6 +25,16 @@ class DriveModel extends Model
         'email',
         'user_id'
     ];
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleting(function($model) {
+            Mail::to($model->email)->send((new ThankEmail($model->name))->delay(10));
+        });
+    }
 
     public function setNameAttribute($value)
     {

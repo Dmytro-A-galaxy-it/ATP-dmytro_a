@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
 class ApplicationRequest extends FormRequest
 {
@@ -13,8 +14,7 @@ class ApplicationRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return backpack_auth()->check();
+        return !backpack_auth()->check();
     }
 
     /**
@@ -25,7 +25,19 @@ class ApplicationRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|max:50|min:4',
+            'surname' => 'required|max:50|min:4',
+            'birthday' => ['required','date', function($attribute, $value, $fail) {
+                $date1 = Carbon::now();
+                $date2 = Carbon::createFromFormat('Y-m-d', $value);
+                if((int)$date1->diffInYears($date2) > 65) {
+                    dd($date1->diffInYears($date2));
+                    $fail('The driver is more than 65 years old.');
+                }                 
+                if($date1->diffInYears($date2) < 18) {
+                    $fail('You are under 18 years old');
+                } 
+            }]
         ];
     }
 
@@ -49,7 +61,10 @@ class ApplicationRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'name.required' => 'You gotta give it a name, man.',
+            'name.min' => 'You came up short. Try more than 3 characters.',
+            'surname.required' => 'You gotta give it a name, man.',
+            'surname.min' => 'You came up short. Try more than 3 characters.'
         ];
     }
 }

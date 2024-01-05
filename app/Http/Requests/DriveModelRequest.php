@@ -32,7 +32,10 @@ class DriveModelRequest extends FormRequest
                 $date2 = Carbon::createFromFormat('Y-m-d', $value);
                 if($date1->diffInYears($date2) > 65) {
                     $fail('The driver is more than 65 years old.');
-                }  
+                }
+                if($date1->diffInYears($date2) < 18) {
+                    $fail('You are under 18 years old');
+                }   
             }],
 
             'name' => ['required', 'min:3'],

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>{{$atp[0]->name}}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,31 +14,49 @@
     </head>
     <body>
        <header>
-       <nav class="navbar navbar-expand-lg bg-body-tertiary container-xxl">
-            <div class="container-xxl">
-                <a class="navbar-brand" href="#">ATP</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                 <img src="" alt="logo">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary container-xxl">
+                <div class="container-xxl">
+                    <a class="navbar-brand" href="http://atp/">{{$atp[0]->name}}</a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <img src="{{asset('storage/' . $atp[0]->logo)}}" alt="logo" style="width: 40px;">
+                    </div>
                 </div>
-            </div>
+                @auth
+                    <p class="flex gap-1 col-1">
+                        <a href="http://atp/admin/" class="btn btn-primary" role="button" data-bs-toggle="button">{{$user->name}}</a>
+                    </p>
+                @endauth
+
+                @guest
+                    <p class="d-inline-flex gap-1">
+                        <a href="http://atp/admin/login" class="btn btn-primary" role="button" data-bs-toggle="button">Login</a>
+                    </p>
+                @endguest
             </nav>
        </header>
        <section>
-        <div class="container-xxl">
-            <form action="" class="container col-sm-4">
+        <div class="container-xxl mt-30">
+            <form action="{{route('post.application')}}" class="container col-sm-4" method="post">
+            @csrf
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input class="form-control" type="text" placeholder="name" aria-label="default input example">
+                <input class="form-control" id="name" name="name" type="text" placeholder="name" >
+                @if( $errors->has( 'name' )) 
+                    <div class= "alert alert-danger" >{{ $errors->first( 'name' ) }}</div > 
+                @endif 
                 <label for="exampleFormControlInput1" class="form-label">Surname</label>
-                <input class="form-control" type="text" placeholder="surname" aria-label="default input example">
+                <input class="form-control" id="surname" name="surname" type="text" placeholder="surname" >
+                @if( $errors->has( 'surname' )) 
+                    <div class= "alert alert-danger" >{{ $errors->first( 'surname' ) }}</div > 
+                @endif 
                 <label for="exampleFormControlInput1" class="form-label">Birthday</label>
-                <input class="form-control" type="text" placeholder="birthday" aria-label="default input example">
+                <input class="form-control" id="birthday" name="birthday" value="2000-01-01" min="1930-01-01" type="date" placeholder="birthday">
+                @if( $errors->has( 'birthday' )) 
+                    <div class= "alert alert-danger" >{{ $errors->first( 'birthday' ) }}</div > 
+                @endif
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3">add</button>
+                <button type="submit" class="btn btn-primary mb-3">Create</button>
             </div>
             </form>
         </div>
