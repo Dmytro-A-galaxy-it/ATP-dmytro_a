@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', 'App\Http\Controllers\Admin\ApplicationCrudController@create')->name('get.application');
-Route::post('/', 'App\Http\Controllers\Admin\ApplicationCrudController@store')->name('post.application');
+Route::get('/', 'App\Http\Controllers\Controller@create')->name('get.application');
+Route::post('/', 'App\Http\Controllers\Controller@store')->name('post.application');

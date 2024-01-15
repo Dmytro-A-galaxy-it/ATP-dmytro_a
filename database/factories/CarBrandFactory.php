@@ -18,6 +18,6 @@ class CarBrandFactory extends Factory
     {
         return [
             'brand' => fake()->name()
-        ];
+        ];  
     }
 }

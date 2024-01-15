@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ApplicationRequest;
-use App\Models\Application;
-use App\Models\Atp;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ApplicationCrudController
@@ -76,23 +73,5 @@ class ApplicationCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    public function create(){
-        if(backpack_auth()->check()) {
-            
-            return redirect(backpack_url(''));
-        }
-
-        $atp = Atp::all();
-        $user = Auth::user();
-        
-        return view('welcome', compact('atp', 'user'));
-    }
-
-    public function store(ApplicationRequest $request){
-        $data = Application::create($request->validated());
-        
-        return redirect()->route('get.application');
     }
 }
