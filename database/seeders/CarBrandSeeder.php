@@ -34,7 +34,7 @@ class CarBrandSeeder extends Seeder
 
         foreach ($brands as $brand){
             CarBrand::create([
-                'name' => $brand
+                'brand' => $brand
             ]);
         }
         

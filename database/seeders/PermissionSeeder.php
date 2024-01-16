@@ -14,12 +14,12 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permission = [
-            'application1',
-            'user-mengement1',
-            'drive-models1',
-            'atps1',
-            'bus-models1',
-            'car-brand1'
+            'application',
+            'user-mengement',
+            'drive-models',
+            'atps',
+            'bus-models',
+            'car-brand'
         ];
 
         foreach ($permission as $permissionName){

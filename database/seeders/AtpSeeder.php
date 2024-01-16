@@ -6,6 +6,7 @@ use App\Models\Atp;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class AtpSeeder extends Seeder
 {
@@ -14,9 +15,10 @@ class AtpSeeder extends Seeder
      */
     public function run(): void
     {
-        Atp::create([
+        $atp = 'image/atp.jpg';
+        DB::table('atps')->insert([
             'name' => 'ATP',
-            'logo' => '',
+            'logo' => $atp,
             'phone' => '+380686493126',
             'description' => 'Компанія ATP є лідером у світі в 
             галузі розробки та впровадження інноваційних автоматизованих 

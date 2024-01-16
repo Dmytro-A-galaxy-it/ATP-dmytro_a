@@ -15,9 +15,9 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            'Admin1',
-            'Driver1',
-            'Manager1'
+            'Admin',
+            'Driver',
+            'Manager'
         ];
 
         $admin = Permission::all();
@@ -28,12 +28,12 @@ class RoleSeeder extends Seeder
                 'name' => $role
             ]);
             
-            if($role == 'Admin1'){
+            if($role == 'Admin'){
                 $this->permissionAll($admin,$rolepr);
-            } elseif ($role == 'Driver1'){
+            } elseif ($role == 'Driver'){
                 $rolepr->givePermissionTo('bus-models');
                 $rolepr->givePermissionTo('drive-models');
-            } elseif ($role == 'Manager1'){
+            } elseif ($role == 'Manager'){
                 $rolepr->givePermissionTo('bus-models');
                 $rolepr->givePermissionTo('drive-models');
                 $rolepr->givePermissionTo('application');
